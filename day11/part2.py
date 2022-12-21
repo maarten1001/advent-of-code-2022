@@ -49,8 +49,9 @@ class Monkey:
         else:
             raise Exception(f"Unknown operation {op}")
 
-    def bored(self):
-        self.items[0] //= 3
+    def bored(self, lim):
+        # self.items[0] //= 3
+        self.items[0] %= lim
         # print(f"    Monkey gets bored with item. Worry level is divided by 3 to {self.items[i]}.")
 
     def test(self):
@@ -79,22 +80,21 @@ class Monkey:
 
 if __name__ == "__main__":
     monkeys = process_input()
-    for rounds in range(1, 20 + 1):
-        # print(f"Start of round {rounds}")
-        for m, monkey in enumerate(monkeys):
-            # print(f"Monkey {m}:")
+    limit = 1
+    # The LCM of two or more prime numbers is equal to their product
+    for monkey in monkeys:
+        limit *= monkey.divisible
+    for rounds in range(1, 10000 + 1):
+        for monkey in monkeys:
             while len(monkey.items) > 0:
                 monkey.inspect()
-                monkey.bored()
+                monkey.bored(limit)
                 monkey.throw(monkeys)
-        print(f"End of round {rounds}")
-        for m, monkey in enumerate(monkeys):
-            strings = [str(x) for x in monkey.items]
-            print(f"Monkey {m}: " + ', '.join(strings))
-        print()
-        for m, monkey in enumerate(monkeys):
-            print(f"Monkey {m} inspected items {monkey.inspections} times.")
-        print()
+        if rounds % 1000 == 0:
+            print(f"== After round {rounds} ==")
+            for m, monkey in enumerate(monkeys):
+                print(f"Monkey {m} inspected items {monkey.inspections} times.")
+            print()
     monkey_business = [m.inspections for m in monkeys]
     monkey_business.sort()
     print(monkey_business[-1] * monkey_business[-2])
