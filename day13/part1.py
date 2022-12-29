@@ -51,6 +51,8 @@ def compare(left, right):
             print("Right side ran out of items, so inputs are not in the right order")
             return False
 
+        raise Exception(f"Unable to compare {left_value} and {right_value}")
+
 
 def solve():
     total = 0
