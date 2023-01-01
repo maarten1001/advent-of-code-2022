@@ -1,27 +1,33 @@
 def process_input():
-    with open("input.txt") as f:
+    with open("test2.txt") as f:
         entries = f.read().splitlines()
         return entries
 
 
 def compare(left, right):
-    print(f"Compare {left}\nvs      {right}")
     for i in range(max(len(left), len(right))):
         left_value = left[i]
         right_value = right[i]
-        # print(f"Compare {left_value} vs {right_value}")
 
-        if left_value.isdecimal() and left[i + 1].isdecimal():
-            left_value = str(10 * int(left_value) + int(left[i + 1]))
-        if right_value.isdecimal() and right[i + 1].isdecimal():
-            right_value = str(10 * int(right_value) + int(right[i + 1]))
+        integer_length = 1
+        if left_value.isdecimal():
+            while left[i + integer_length].isdecimal():
+                left_value = left_value + left[i + integer_length]
+                integer_length += 1
+        if right_value.isdecimal():
+            integer_length = 1
+            while right[i + integer_length].isdecimal():
+                right_value = right_value + right[i + integer_length]
+                integer_length += 1
 
         if left_value == right_value:
             if left_value.isdecimal():
                 print(f"Compare {left_value} vs {right_value}")
+                return compare(left[i + integer_length:], right[i + integer_length:])
             continue
 
         if left_value.isdecimal() and right_value.isdecimal():
+            print(f"Compare {left_value} vs {right_value}")
             if int(left_value) < int(right_value):
                 print("Left side is smaller, so inputs are in the right order")
                 return True
