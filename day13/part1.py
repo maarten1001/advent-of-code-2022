@@ -1,5 +1,5 @@
 def process_input():
-    with open("test2.txt") as f:
+    with open("input.txt") as f:
         entries = f.read().splitlines()
         return entries
 
