@@ -1,8 +1,9 @@
 def process_input(s):
     with open("input.txt") as f:
         entries = f.read().splitlines()
-        max_value = max(max(max(int(i) for i in j.split(',')) for j in k.split(' -> ')) for k in entries)
-        cave = [['.' for _ in range(max_value + 1)] for _ in range(max_value + 1)]
+        max_x = max(max(int(i.split(',')[0]) for i in j.split(' -> ')) for j in entries)
+        max_y = max(max(int(i.split(',')[1]) for i in j.split(' -> ')) for j in entries)
+        cave = [['.' for _ in range(max_x + 1)] for _ in range(max_y + 1)]
         cave[s[1]][s[0]] = '+'
         for line in entries:
             points = line.split(' -> ')
@@ -19,7 +20,7 @@ def process_input(s):
                     if dy != 0:
                         y += dy // abs(dy)
                 cave[end_y][end_x] = '#'
-        return cave, max_value
+        return cave, max_x, max_y
 
 
 def print_grid(g):
@@ -32,7 +33,7 @@ def print_grid(g):
 
 def solve():
     sand_start = (500, 0)
-    cave, max_value = process_input(sand_start)
+    cave, max_x, max_y = process_input(sand_start)
     sand_count = 0
     sand_x, sand_y = sand_start
     while True:
@@ -48,7 +49,7 @@ def solve():
             cave[sand_y][sand_x] = 'o'
             sand_x, sand_y = sand_start
             sand_count += 1
-        if sand_y >= max_value - 1:
+        if sand_y >= max_y:
             # print_grid(cave)
             print(sand_count)
             break
